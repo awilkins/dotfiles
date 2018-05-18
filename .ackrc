@@ -1,0 +1,6 @@
+--ignore-dir=node_modules
+--ignore-dir=build
+--ignore-dir=report
+--ignore-dir=results
+--ignore-dir=target
+--ignore-file=match:.*tfstate\.backup$
