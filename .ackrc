@@ -4,3 +4,4 @@
 --ignore-dir=results
 --ignore-dir=target
 --ignore-file=match:.*tfstate\.backup$
+--ignore-file=is:.tags

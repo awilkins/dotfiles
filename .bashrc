@@ -120,13 +120,14 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 . $HOME/.asdf/asdf.sh
 
 . $HOME/.asdf/completions/asdf.bash
 
 export GOPATH=$HOME/gocode
 export PATH="$PATH:$GOPATH/bin"
+
+source <(awless completion bash)
 
 source ~/.local/bin/git-prompt.sh
 
