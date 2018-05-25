@@ -71,6 +71,7 @@ unset color_prompt force_color_prompt
 case "$TERM" in
 xterm*|rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    PS1_PREFIX="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1_PREFIX"
     ;;
 *)
     ;;
@@ -126,6 +127,7 @@ fi
 
 export GOPATH=$HOME/gocode
 export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:$HOME/.local/bin"
 
 source <(awless completion bash)
 
