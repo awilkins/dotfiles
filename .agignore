@@ -1,6 +1,7 @@
 **/node_nodules/
 *.tfstate.*.backup
 *.min.js
+*.pack.js
 yarn.lock
 package-lock.json
 /*/api-docs/
