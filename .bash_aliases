@@ -1,3 +1,5 @@
 alias fuck='sudo $(history -p \!\!)'
 alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias beep='paplay /usr/share/sounds/ubuntu/ringtones/Marimbach.ogg'
+alias terraform0117='/home/awilkins/.asdf/installs/terraform/0.11.7/bin/terraform'
+alias urldecode='sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b"'

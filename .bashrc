@@ -126,16 +126,46 @@ fi
 . $HOME/.asdf/completions/asdf.bash
 
 export GOPATH=$HOME/gocode
-export PATH="$PATH:$GOPATH/bin"
+export PATH="$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin"
 export PATH="$PATH:$HOME/.local/bin"
 
 source <(awless completion bash)
 
-source ~/.local/bin/git-prompt.sh
+# source ~/.local/bin/git-prompt.sh
 
 GIT_PS1_SHOWDIRTYSTATE=y
 GIT_PS1_SHOWSTASHSTATE=y
 GIT_PS1_SHOWUPSTREAM=auto
 GIT_PS1_SHOWCOLORHINTS=y
 
-PROMPT_COMMAND="__git_ps1 \"${PS1_PREFIX}\" \"${PS1_SUFFIX}\""
+# PROMPT_COMMAND="__git_ps1 \"${PS1_PREFIX}\" \"${PS1_SUFFIX}\""
+
+# `hub` command
+eval "$(hub alias -s)"
+
+# Starship
+function set_win_title() {
+  DIRNAME="$(dirname "$PWD")"
+  BASENAME="$(basename "$PWD")"
+  echo -ne "\033]0; ${DIRNAME}/${BASENAME}\007"
+}
+starship_precmd_user_func="set_win_title"
+eval "$(starship init bash)"
+
+
+source /usr/share/ondir/integration/bash
+
+ssmrdp() {
+  aws ssm start-session --target $1 \
+    --document-name AWS-StartPortForwardingSession \
+    --parameters '{"portNumber":["3389"],"localPortNumber":["3389"]}'
+}
+
+if [ -f /snap/hub/current/go/src/github.com/github/hub/etc/hub.bash_completion.sh ]; then
+  . /snap/hub/current/go/src/github.com/github/hub/etc/hub.bash_completion.sh
+fi
+
+
+export PATH=$PATH:/home/awilkins/lib/vsts-cli/bin
+
+source '/home/awilkins/lib/vsts-cli/vsts.completion'
