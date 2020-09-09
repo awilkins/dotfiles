@@ -165,7 +165,5 @@ if [ -f /snap/hub/current/go/src/github.com/github/hub/etc/hub.bash_completion.s
   . /snap/hub/current/go/src/github.com/github/hub/etc/hub.bash_completion.sh
 fi
 
-
-export PATH=$PATH:/home/awilkins/lib/vsts-cli/bin
-
-source '/home/awilkins/lib/vsts-cli/vsts.completion'
+# Poetry (python builder in vein of npm)
+PATH="${PATH}:${HOME}/.poetry/bin"
