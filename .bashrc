@@ -152,9 +152,6 @@ function set_win_title() {
 starship_precmd_user_func="set_win_title"
 eval "$(starship init bash)"
 
-
-source /usr/share/ondir/integration/bash
-
 ssmrdp() {
   aws ssm start-session --target $1 \
     --document-name AWS-StartPortForwardingSession \
@@ -165,5 +162,5 @@ if [ -f /snap/hub/current/go/src/github.com/github/hub/etc/hub.bash_completion.s
   . /snap/hub/current/go/src/github.com/github/hub/etc/hub.bash_completion.sh
 fi
 
-# Poetry (python builder in vein of npm)
-PATH="${PATH}:${HOME}/.poetry/bin"
+eval "$(direnv hook bash)"
+
