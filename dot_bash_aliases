@@ -1,0 +1,64 @@
+alias fuck='sudo $(history -p \!\!)'
+alias config='/usr/bin/git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+alias beep='paplay /usr/share/sounds/ubuntu/ringtones/Marimbach.ogg'
+alias urldecode='sed "s@+@ @g;s@%@\\\\x@g" | xargs -0 printf "%b"'
+alias assume=$'jq -r \'.Credentials | [ "export AWS_ACCESS_KEY_ID=\\(.AccessKeyId)", "export AWS_SECRET_ACCESS_KEY=\\(.SecretAccessKey)", "export AWS_SESSION_TOKEN=\\(.SessionToken)" ] |.[] \''
+alias utcstamp='date -u +"%Y-%m-%dT%H:%M:%S.%3N%z"'
+alias aws-clear='unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN AWS_ACCOUNT_ID'
+alias aws-get-creds=$'jq -r \'.Credentials | [ "AWS_ACCESS_KEY_ID=\(.AccessKeyId)", "AWS_SECRET_ACCESS_KEY=\(.SecretAccessKey)", "AWS_SESSION_TOKEN=\(.SessionToken)" ] |.[] \' $(grep -l  $(aws sts get-caller-identity --output text --query \'UserId\') ~/.aws/cli/cache/*)'
+alias aws-env=$'for C in $(aws-get-creds) ; do export $C ; done'
+
+aws-login() {
+	firefox "$(printf 'ext+container:name=%s&url=%s' $1 $(aws-vault login --stdout $1 | jq -sRr @uri))"
+}
+
+alias docker-compose="docker compose"
+
+texas-vpn() {
+	echo "Trigger Mooltipass"
+	PASSWORD=$(mc-get texasplatform.uk adwi7)
+	if [ $? -ne 0 ]; then
+		echo "Failed to get password"
+		exit 1
+	fi
+	MFA=$(ykman oath code texas -s)
+	if [ $? -ne 0 ]; then
+		echo "Failed to get MFA"
+		exit 1
+	fi
+	echo "vpn.secrets.password:$MFA" >>/tmp/vpn-creds
+	echo "vpn.secrets.cert-pass:$PASSWORD" >>/tmp/vpn-creds
+	nmcli connection up "adwi7-live-$1" passwd-file /tmp/vpn-creds
+	rm /tmp/vpn-creds
+}
+
+kube-token() {
+	aws-vault exec "texas-${1}" -- aws eks get-token --region eu-west-2 --cluster-name live-leks-cluster | jq -r .status.token | xclip
+}
+
+alias in="task add +in"
+
+tickle() {
+	deadline=$1
+	shift
+	in +tickle wait:$deadline $@
+}
+
+alias tick=tickle
+
+alias nocache='echo -e "Signature: 8a477f597d28d172789f06886806bc55\n# This file is a cache directory tag created by (application name).\n# For information about cache directory tags, see:\n#	http://www.brynosaurus.com/cachedir/" > ${1:-.}/CACHEDIR.TAG'
+
+alias tvim='NVIM_APPNAME=nvim-taskwiki nvim'
+alias lvim='NVIM_APPNAME=nvim-lunar lvim'
+
+tika() {
+	java -jar ~/.local/bin/tika-app-3.0.0-BETA.jar $@
+}
+
+fd-latest() {
+	fd "$@" -t f -X ls -t {} \;
+}
+
+ffd() {
+	fd "$@" -t f -X ls -t {} \; | fzf --tiebreak=index
+}
